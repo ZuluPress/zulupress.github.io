@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TikTok Authorization Callback | ZuluPress</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="/">
+        <img src="/assets/zulupress-logo.png" alt="ZuluPress logo">
+        <span>ZuluPress</span>
+      </a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/terms.html">Terms</a>
+        <a href="/privacy.html">Privacy</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="legal">
+    <article class="content-card">
+      <span class="badge">TikTok OAuth</span>
+      <h1>Authorization Callback</h1>
+      <p>This page receives the TikTok authorization response during developer testing.</p>
+
+      <div class="notice-card">
+        <p><strong>Security note:</strong> Do not share authorization codes, access tokens, refresh tokens, client secrets, screenshots containing codes, or callback URLs containing secrets in public channels.</p>
+      </div>
+
+      <h2>Status</h2>
+      <p id="status">Reading authorization response...</p>
+
+      <h2>Authorization Code</h2>
+      <p>If a code is present, copy it locally and exchange it from your secure development machine.</p>
+      <pre id="code" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#05070a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1rem;color:#f3c978;">No code found.</pre>
+
+      <h2>Returned State</h2>
+      <pre id="state" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#05070a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1rem;color:#b7ad9d;">No state found.</pre>
+
+      <h2>Error</h2>
+      <pre id="error" style="white-space:pre-wrap;overflow-wrap:anywhere;background:#05070a;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1rem;color:#ff8a80;">No error returned.</pre>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span>© 2026 ZuluPress LLC. All rights reserved.</span>
+      <span><a href="/">Home</a> · <a href="/privacy.html">Privacy</a></span>
+    </div>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("code");
+    const state = params.get("state");
+    const scopes = params.get("scopes");
+    const error = params.get("error");
+    const errorDescription = params.get("error_description");
+
+    const statusEl = document.getElementById("status");
+    const codeEl = document.getElementById("code");
+    const stateEl = document.getElementById("state");
+    const errorEl = document.getElementById("error");
+
+    if (error) {
+      statusEl.textContent = "TikTok returned an authorization error.";
+      errorEl.textContent = error + (errorDescription ? "\n" + errorDescription : "");
+    } else if (code) {
+      statusEl.textContent = "Authorization code received. Exchange this code locally from your secure development environment.";
+      codeEl.textContent = code;
+      errorEl.textContent = "No error returned.";
+    } else {
+      statusEl.textContent = "No authorization code was found in the URL.";
+    }
+
+    if (state) {
+      stateEl.textContent = state + (scopes ? "\nScopes: " + scopes : "");
+    }
+  </script>
+</body>
+</html>
